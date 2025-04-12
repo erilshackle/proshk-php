@@ -1,0 +1,20 @@
+{
+    "name": "eshk/procedural",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Eril TS Carvalho",
+            "email": "erilandocarvalho@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "file": [
+            "backend/config/Configs.php"
+        ]
+    },
+    "require": {}
+}

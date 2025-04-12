@@ -1,0 +1,56 @@
+# Ativar mod_rewrite
+RewriteEngine On
+
+# 1️⃣ Forçar HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# 2️⃣ Redirecionar WWW para não-WWW (ou vice-versa)
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# 3️⃣ Remover ".php" da URL
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L,QSA]
+
+# 4️⃣ Página de erro personalizada
+ErrorDocument 404 /views/_errors/404.php
+
+# 5️⃣ Bloquear acesso a arquivos sensíveis
+<FilesMatch "(\.env|\.htaccess|config\.php|composer\.(json|lock))">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# 6️⃣ Ativar Cache para Melhorar Velocidade
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# 7️⃣ Habilitar Compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+</IfModule>
+
+# 8️⃣ Proteger Diretório com Senha (Opcional)
+<Files "admin">
+    AuthType Basic
+    AuthName "Área Restrita"
+    AuthUserFile /caminho/do/.htpasswd
+    Require valid-user
+</Files>
+
+# 9️⃣ Prevenir Hotlinking (roubo de imagens)
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?seusite\.com [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|webp)$ - [F]
+</IfModule>
+
+# 🔟 Impedir Listagem de Diretórios
+Options -Indexes

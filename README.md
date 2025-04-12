@@ -1,4 +1,4 @@
-# php-procedural
+# proshk-php (php-procedural by shk)
 
 Estrutura simples e flexível para desenvolvimento de sites em PHP puro, sem frameworks. Ideal para quem quer começar rápido com um projeto procedural e organizado.
 
